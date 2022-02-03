@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 import '../styles/tasklist.scss'
 
@@ -16,15 +16,27 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    if(!newTaskTitle){
+      console.log('Informe uma tarefa')
+    }
+    setTasks([...tasks,{id:Date.now(),title:newTaskTitle,isComplete:false}])
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    let pos = tasks.findIndex(el => el.id == id)
+    const tempTaks = [...tasks];
+    tempTaks[pos].isComplete = !tempTaks[pos].isComplete
+    setTasks(tempTaks);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    let pos = tasks.findIndex(el => el.id == id);
+    const newtaks = tasks.filter(tasks => tasks.id !== id);
+    setTasks(newtaks);
   }
+
 
   return (
     <section className="task-list container">
